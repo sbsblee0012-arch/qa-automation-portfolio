@@ -1,3 +1,5 @@
+[![QA 자동화 테스트](https://github.com/sbsblee0012-arch/qa-automation-portfolio/actions/workflows/test.yml/badge.svg)](https://github.com/sbsblee0012-arch/qa-automation-portfolio/actions/workflows/test.yml)
+
 # QA 자동화 테스트 포트폴리오
 
 ## 프로젝트 소개
