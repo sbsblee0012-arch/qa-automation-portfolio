@@ -1,56 +1,39 @@
+import pytest
 from playwright.sync_api import sync_playwright
+from pages.login_page import LoginPage
 
-def test_로그인_성공():
-    with sync_playwright() as p:
-        # 브라우저 열기 (headless=False 면 실제로 눈에 보여요)
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
 
-        # 연습용 쇼핑몰 사이트 열기
-        page.goto("https://www.saucedemo.com")
-
-        # 아이디 입력
-        page.fill("#user-name", "standard_user")
-
-        # 비밀번호 입력
-        page.fill("#password", "secret_sauce")
-
-        # 로그인 버튼 클릭
-        page.click("#login-button")
-
-        # 로그인 후 URL 확인
-        assert "inventory" in page.url
-
-        print("✅ 로그인 성공!")
-        browser.close()
-
-def test_로그인_실패_틀린비밀번호():
+@pytest.fixture
+def page():
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=False)
         page = browser.new_page()
-
-        page.goto("https://www.saucedemo.com")
-        page.fill("#user-name", "standard_user")
-        page.fill("#password", "wrong_password")  # 틀린 비밀번호
-        page.click("#login-button")
-
-        # 에러 메시지가 화면에 나타나는지 확인
-        error = page.locator("[data-test='error']")
-        assert error.is_visible()
-
-        print("✅ 에러 메시지 정상 노출!")
+        yield page
         browser.close()
 
-def test_로그인_실패_빈값():
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        page = browser.new_page()
 
-        page.goto("https://www.saucedemo.com")
-        page.click("#login-button")  # 아무것도 입력 안 하고 클릭
+def test_로그인_성공(page):
+    login = LoginPage(page)
+    login.open()
+    login.login("standard_user", "secret_sauce")
 
-        error = page.locator("[data-test='error']")
-        assert error.is_visible()
+    assert "inventory" in page.url
+    print("✅ 로그인 성공!")
 
-        print("✅ 빈값 에러 메시지 정상 노출!")
-        browser.close()
+
+@pytest.mark.parametrize("아이디, 비밀번호, 기대에러", [
+    ("standard_user", "wrong_password", "Username and password do not match"),
+    ("", "", "Username is required"),
+    ("standard_user", "", "Password is required"),
+    ("locked_out_user", "secret_sauce", "Sorry, this user has been locked out"),
+    ("invalid_user", "secret_sauce", "Username and password do not match"),
+])
+def test_로그인_실패(page, 아이디, 비밀번호, 기대에러):
+    login = LoginPage(page)
+    login.open()
+    login.login(아이디, 비밀번호)
+
+    error = page.locator("[data-test='error']")
+    assert error.is_visible()
+    assert 기대에러 in error.inner_text()
+    print(f"✅ 에러 확인: {기대에러}")
