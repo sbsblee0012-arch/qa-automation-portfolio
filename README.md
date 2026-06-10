@@ -1,6 +1,6 @@
 # QA 자동화 테스트 포트폴리오
 
-## 📌 프로젝트 소개
+## 프로젝트 소개
 Playwright와 pytest를 활용한 웹 UI 자동화 및 API 테스트 프로젝트입니다.
 
 ## 🛠 사용 기술
@@ -23,7 +23,7 @@ qa_automation/
 ├── test_e2e.py
 └── test_api.py
 
-## ✅ 테스트 시나리오
+## 테스트 시나리오
 
 ### UI 자동화 (Playwright)
 - 로그인 성공/실패/빈값 테스트
@@ -36,7 +36,7 @@ qa_automation/
 - 게시글 생성 (POST)
 - 게시글 삭제 (DELETE)
 
-## 🚀 실행 방법
+## 실행 방법
 ```bash
 # 설치
 pip3 install playwright pytest pytest-html requests python-dotenv
