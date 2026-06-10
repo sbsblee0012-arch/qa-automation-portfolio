@@ -1,0 +1,29 @@
+name: QA 자동화 테스트
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v3
+
+      - name: Python 설치
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: 라이브러리 설치
+        run: |
+          pip install pytest pytest-html requests python-dotenv playwright
+          playwright install --with-deps chromium
+
+      - name: 환경변수 설정
+        run: echo "BASE_URL=https://jsonplaceholder.typicode.com" >> $GITHUB_ENV
+
+      - name: API 테스트 실행
+        run: pytest tests/test_api.py -v
