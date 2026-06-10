@@ -48,3 +48,7 @@ pytest tests/ -v
 # HTML 리포트 생성
 pytest tests/ -v --html=report.html
 ```
+
+## 📊 테스트 결과
+
+![테스트 리포트](assets/report_screenshot.png)
