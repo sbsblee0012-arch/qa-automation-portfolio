@@ -67,3 +67,11 @@ pytest tests/ -v --html=report.html --self-contained-html
 - \`main\` 브랜치 push 및 Pull Request 시 UI · API 테스트 전체 자동 실행
 - Actions 탭에서 수동 실행(workflow_dispatch) 지원
 - 실행 후 HTML 리포트를 아티팩트로 업로드 (실패 시에도 업로드)
+
+## 환경변수
+
+로컬 실행 시 `.env.example`을 참고해 `.env` 파일을 생성하세요.
+
+```
+BASE_URL=https://jsonplaceholder.typicode.com
+```
