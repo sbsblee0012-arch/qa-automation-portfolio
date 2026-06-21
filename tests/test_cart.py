@@ -1,3 +1,4 @@
+import os
 from playwright.sync_api import sync_playwright
 import pytest
 
@@ -5,7 +6,7 @@ import pytest
 def logged_in_page():
     """로그인된 상태의 페이지를 준비해두는 fixture"""
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=os.getenv("CI") == "true")
         page = browser.new_page()
 
         page.goto("https://www.saucedemo.com")

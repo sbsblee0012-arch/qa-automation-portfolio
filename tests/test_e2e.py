@@ -9,7 +9,7 @@ from pages.checkout_page import CheckoutPage
 
 def test_전체_구매_흐름():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=os.getenv("CI") == "true")
         page = browser.new_page()
 
         # 1. 로그인

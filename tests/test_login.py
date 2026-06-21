@@ -1,3 +1,4 @@
+import os
 import pytest
 from playwright.sync_api import sync_playwright
 from pages.login_page import LoginPage
@@ -6,7 +7,7 @@ from pages.login_page import LoginPage
 @pytest.fixture
 def page():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=os.getenv("CI") == "true")
         page = browser.new_page()
         yield page
         browser.close()
